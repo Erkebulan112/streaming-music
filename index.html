@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Erkebulan Music Stream</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(to right, #1e1e2f, #3c3c5c);
+      color: white;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 40px;
+    }
+
+    h1 span {
+      color: #ff4b5c;
+      font-weight: 700;
+    }
+
+    .music-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 90%;
+      max-width: 700px;
+      background-color: #2a2a3b;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      margin-bottom: 25px;
+      transition: transform 0.2s;
+    }
+
+    .music-container:hover {
+      transform: scale(1.02);
+    }
+
+    .music-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .music-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .music-details {
+      text-align: left;
+    }
+
+    .music-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .music-button {
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      color: white;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      border-radius: 30px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .music-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(166, 119, 227, 0.5);
+    }
+
+    .heart {
+      font-size: 1.8em;
+      cursor: pointer;
+      transition: color 0.3s, transform 0.3s;
+      margin-left: 10px;
+    }
+
+    .heart.liked {
+      color: red;
+      transform: scale(1.2);
+    }
+
+    audio {
+      margin-top: 30px;
+      width: 80%;
+      max-width: 700px;
+    }
+
+    @media (max-width: 768px) {
+      .music-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .music-info {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+      }
+
+      .music-button {
+        width: 100%;
+        padding: 15px;
+      }
+
+      audio {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1><span>Erkebulan</span> Local Music Stream</h1>
+
+<div class="music-container">
+  <div class="music-info">
+    <img class="music-image" src="/images/someone.jpg" alt="Someone">
+    <div class="music-details">
+      <div class="music-title">Someone</div>
+      <button class="music-button" onclick="playSong('Vanotek feat. Denitia - Someone.wav')">▶ Play</button>
+    </div>
+  </div>
+  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+</div>
+
+<div class="music-container">
+  <div class="music-info">
+    <img class="music-image" src="/images/other-people.jpg" alt="Other People">
+    <div class="music-details">
+      <div class="music-title">Other People</div>
+      <button class="music-button" onclick="playSong('LP - Other People.wav')">▶ Play</button>
+    </div>
+  </div>
+  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+</div>
+
+<div class="music-container">
+  <div class="music-info">
+    <img class="music-image" src="/images/beinen.jpg" alt="Beinen">
+    <div class="music-details">
+      <div class="music-title">Beinen</div>
+      <button class="music-button" onclick="playSong('madeniyett-beinen-bejne_(muzzona.kz).wav')">▶ Play</button>
+    </div>
+  </div>
+  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+</div>
+
+<div class="music-container">
+  <div class="music-info">
+    <img class="music-image" src="/images/jaryq.jpg" alt="Jaryq">
+    <div class="music-details">
+      <div class="music-title">Jaryq</div>
+      <button class="music-button" onclick="playSong('1645357455_koba-mans-jaryq_(uzxit.net).wav')">▶ Play</button>
+    </div>
+  </div>
+  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+</div>
+
+<audio id="audio-player" controls></audio>
+
+<script>
+  function playSong(fileName) {
+    const audioPlayer = document.getElementById('audio-player');
+    audioPlayer.src = '/audio/' + fileName;
+    audioPlayer.play();
+  }
+
+  function toggleHeart(element) {
+    element.classList.toggle("liked");
+  }
+</script>
+
+</body>
+</html>
