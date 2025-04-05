@@ -1,95 +1,225 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Викторина по странам</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Montserrat', sans-serif;
       background: linear-gradient(to right, #1e1e2f, #3c3c5c);
       color: white;
       text-align: center;
-      padding: 40px 20px;
+      padding: 20px;
+      min-height: 100vh;
     }
 
     h1 {
-      font-size: 2.5rem;
+      font-size: 2rem;
       color: #ff4b5c;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
+    }
+
+    .quiz-container {
+      max-width: 800px;
+      margin: 0 auto;
     }
 
     .quiz-image {
-      width: 300px;
-      height: 200px;
+      width: 100%;
+      max-width: 500px;
+      height: auto;
+      max-height: 300px;
       object-fit: cover;
       border-radius: 12px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-      margin-bottom: 20px;
+      margin: 0 auto 20px;
     }
 
     .options {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 15px;
-      max-width: 500px;
       margin: 0 auto 30px;
+      max-width: 500px;
     }
 
     .option-btn {
-      padding: 12px 20px;
+      padding: 12px;
       background: linear-gradient(135deg, #6e8efb, #a777e3);
       border: none;
       border-radius: 30px;
       color: white;
       font-size: 1rem;
       cursor: pointer;
-      transition: 0.2s ease;
+      transition: transform 0.2s;
     }
 
     .option-btn:hover {
       transform: scale(1.05);
-      box-shadow: 0 4px 15px rgba(166, 119, 227, 0.5);
     }
 
-    .score {
-      font-size: 1.5rem;
-      margin-top: 30px;
+    .score-container {
+      font-size: 1.3rem;
+      margin: 20px 0;
     }
 
-    .music-button {
-      margin-top: 20px;
+    .controls {
+      margin: 20px 0;
+    }
+
+    .btn {
+      padding: 10px 20px;
       background: linear-gradient(135deg, #6e8efb, #a777e3);
       color: white;
-      padding: 10px 20px;
-      font-size: 1rem;
       border: none;
-      cursor: pointer;
       border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin: 5px;
+      transition: transform 0.2s;
     }
 
-    a {
-      color: #ccc;
-      display: block;
-      margin-top: 40px;
+    .btn:hover {
+      transform: scale(1.05);
     }
 
-    #result {
-      font-size: 1.5rem;
-      margin-top: 40px;
+    .quiz-end {
+      display: none;
+      animation: fadeIn 0.5s;
+    }
+
+    .leaderboard {
+      background: rgba(42, 42, 59, 0.8);
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px auto;
+      max-width: 500px;
+    }
+
+    .leaderboard h3 {
+      margin-top: 0;
+      color: #ff4b5c;
+    }
+
+    .leaderboard ol {
+      padding-left: 20px;
+      text-align: left;
+    }
+
+    .leaderboard li {
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .leaderboard li span {
+      color: #a777e3;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 20px auto;
+      max-width: 500px;
+    }
+
+    .input-group input {
+      padding: 12px;
+      border-radius: 30px;
+      border: none;
+      background: #2a2a3b;
+      color: white;
+      text-align: center;
+    }
+
+    .input-group button {
+      padding: 12px;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    .timer {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      color: #ff4b5c;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .options {
+        grid-template-columns: 1fr;
+      }
+      
+      .quiz-image {
+        max-height: 250px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
+      
+      .quiz-image {
+        max-height: 200px;
+      }
+      
+      .option-btn {
+        padding: 10px;
+        font-size: 0.9rem;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 </head>
 <body>
+  <div class="quiz-container">
+    <button class="btn" onclick="toggleMusic()">🔊 Музыка</button>
+    <h1>🌍 Сурет бойынша елді табыңыз!!!</h1>
+    <div class="timer" id="timer">00:00</div>
+    <img class="quiz-image" id="quiz-image" src="" alt="Картинка вопроса">
+    <div class="options" id="options"></div>
+    <div class="score-container">
+      Сұрақ: <span id="current-question">1</span>/<span id="total-questions">10</span> | 
+      Ұпай: <span id="score">0</span>
+    </div>
 
-  <button class="music-button" onclick="toggleMusic()">🔊 Музыка</button>
+    <div class="quiz-end" id="quiz-end">
+      <h2>Викторина аяқталды!</h2>
+      <p>Сіздің нәтижеңіз: <strong><span id="final-score">0</span>/<span id="max-score">10</span></strong></p>
+      <p id="time-result">Уақыт: 00:00</p>
+      
+      <div class="input-group">
+        <input type="text" id="player-name" placeholder="Есіміңізді жазыңыз" maxlength="15">
+        <button onclick="saveResult()">Нәтижені сақтау</button>
+      </div>
+      
+      <div class="leaderboard">
+        <h3>🏆 ТОП-5 ойыншылар:</h3>
+        <ol id="top-players"></ol>
+      </div>
+      
+      <div class="controls">
+        <button class="btn" onclick="restartQuiz()">🔄 Қайта бастау</button>
+        <a href="index.html" class="btn">← Артқа</a>
+      </div>
+    </div>
+  </div>
 
-  <h1>🌍 Сурет бойынша елді табыңыз!!!</h1>
-  <img class="quiz-image" id="quiz-image" src="" alt="Картинка вопроса" />
-  <div class="options" id="options"></div>
-  <div class="score" id="score"></div>
-  <a href="index.html">← Артқа плеерге</a>
-
-  <audio id="bg-music" src="/quiz_audio/0226-muz-vremja-poshlo-1105473466_-mz30858zv86866.mp3" autoplay loop></audio>
+  <audio id="bg-music" src="/quiz_audio/0226-muz-vremja-poshlo-1105473466_-mz30858zv86866.mp3" loop></audio>
 
   <script>
     const easyQuestions = [
@@ -111,28 +241,70 @@
       { image: "/quiz_images/iceland.webp", correct: "Исландия", options: ["Исландия", "Норвегия", "Гренландия", "Швеция"] },
     ];
 
-    // Получаем 5 случайных из easy, 3 из medium и 2 из hard
+    // Получаем случайные вопросы
     function getRandomQuestions(source, count) {
-      return source.sort(() => 0.5 - Math.random()).slice(0, count);
+      return [...source].sort(() => 0.5 - Math.random()).slice(0, count);
     }
 
-    const questions = [
-      ...getRandomQuestions(easyQuestions, 5),
-      ...getRandomQuestions(mediumQuestions, 3),
-      ...getRandomQuestions(hardQuestions, 2)
-    ].sort(() => 0.5 - Math.random()); 
-
+    let questions = [];
     let currentIndex = 0;
     let score = 0;
+    let startTime;
+    let timerInterval;
 
+    // Инициализация викторины
+    function initQuiz() {
+      questions = [
+        ...getRandomQuestions(easyQuestions, 5),
+        ...getRandomQuestions(mediumQuestions, 3),
+        ...getRandomQuestions(hardQuestions, 2)
+      ].sort(() => 0.5 - Math.random());
+
+      currentIndex = 0;
+      score = 0;
+      document.getElementById("current-question").textContent = "1";
+      document.getElementById("total-questions").textContent = questions.length;
+      document.getElementById("score").textContent = "0";
+      document.getElementById("quiz-end").style.display = "none";
+      document.getElementById("quiz-image").style.display = "block";
+      document.getElementById("options").innerHTML = "";
+      startTimer();
+      showQuestion();
+    }
+
+    // Таймер
+    function startTimer() {
+      startTime = new Date();
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(updateTimer, 1000);
+      updateTimer();
+    }
+
+    function updateTimer() {
+      const now = new Date();
+      const elapsed = new Date(now - startTime);
+      const minutes = elapsed.getUTCMinutes().toString().padStart(2, '0');
+      const seconds = elapsed.getUTCSeconds().toString().padStart(2, '0');
+      document.getElementById("timer").textContent = `${minutes}:${seconds}`;
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+      const now = new Date();
+      const elapsed = new Date(now - startTime);
+      const minutes = elapsed.getUTCMinutes().toString().padStart(2, '0');
+      const seconds = elapsed.getUTCSeconds().toString().padStart(2, '0');
+      return `${minutes}:${seconds}`;
+    }
+
+    // Показ вопроса
     function showQuestion() {
       if (currentIndex >= questions.length) {
-        document.getElementById("quiz-image").style.display = "none";
-        document.getElementById("options").innerHTML = "";
-        document.getElementById("score").innerHTML = `🏁 Викторина аяқталды!<br>Сіздің нәтижеңіз: <strong>${score} - ${questions.length}</strong>`;
+        endQuiz();
         return;
       }
 
+      document.getElementById("current-question").textContent = currentIndex + 1;
       const q = questions[currentIndex];
       document.getElementById("quiz-image").src = q.image;
 
@@ -142,28 +314,124 @@
       q.options.sort(() => 0.5 - Math.random()).forEach(option => {
         const btn = document.createElement("button");
         btn.className = "option-btn";
-        btn.innerText = option;
-        btn.onclick = () => {
-          if (option === q.correct) {
-            score++;
-          }
-          currentIndex++;
-          showQuestion();
-        };
+        btn.textContent = option;
+        btn.onclick = () => checkAnswer(option, q.correct);
         optionsContainer.appendChild(btn);
       });
     }
 
-    showQuestion();
+    // Проверка ответа
+    function checkAnswer(selected, correct) {
+      if (selected === correct) {
+        score++;
+        document.getElementById("score").textContent = score;
+      }
+      currentIndex++;
+      showQuestion();
+    }
+
+    // Завершение викторины
+    function endQuiz() {
+      const time = stopTimer();
+      document.getElementById("final-score").textContent = score;
+      document.getElementById("max-score").textContent = questions.length;
+      document.getElementById("time-result").textContent = `Уақыт: ${time}`;
+      document.getElementById("quiz-image").style.display = "none";
+      document.getElementById("options").innerHTML = "";
+      document.getElementById("quiz-end").style.display = "block";
+      displayLeaderboard();
+    }
+
+    // Таблица лидеров
+    function saveResult() {
+      const name = document.getElementById("player-name").value.trim();
+      if (!name) return alert("Есіміңізді жазыңыз!");
+      
+      const playerScore = score;
+      const time = document.getElementById("time-result").textContent.replace("Уақыт: ", "");
+      
+      // Получаем текущую таблицу лидеров
+      let leaderboard = JSON.parse(localStorage.getItem("quizLeaderboard")) || [];
+      
+      // Добавляем новый результат
+      leaderboard.push({
+        name,
+        score: playerScore,
+        time,
+        date: new Date().toISOString()
+      });
+      
+      // Сортируем по очкам (убывание), затем по времени (возрастание)
+      leaderboard.sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        return a.time.localeCompare(b.time);
+      });
+      
+      // Оставляем только ТОП-5
+      leaderboard = leaderboard.slice(0, 5);
+      
+      // Сохраняем
+      localStorage.setItem("quizLeaderboard", JSON.stringify(leaderboard));
+      displayLeaderboard();
+      alert("Сіздің нәтижеңіз сақталды!");
+    }
+
+    function displayLeaderboard() {
+      const leaderboard = JSON.parse(localStorage.getItem("quizLeaderboard")) || [];
+      const list = document.getElementById("top-players");
+      list.innerHTML = "";
+      
+      if (leaderboard.length === 0) {
+        list.innerHTML = "<li>Әзірге нәтижелер жоқ</li>";
+        return;
+      }
+      
+      leaderboard.forEach((player, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <span>${index + 1}. ${player.name}</span>
+          ${player.score} ұпай (${player.time})
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    // Перезапуск викторины
+    function restartQuiz() {
+      initQuiz();
+    }
 
     function toggleMusic() {
-      const audio = document.getElementById("bg-music");
-      if (audio.paused) {
-        audio.play();
-      } else {
-        audio.pause();
-      }
+    const audio = document.getElementById("bg-music");
+    if (audio.paused) {
+      audio.play();
+      document.querySelector(".music-button").textContent = "🔊 Музыка";
+    } else {
+      audio.pause();
+      document.querySelector(".music-button").textContent = "🔇 Музыка";
     }
+  }
+
+  // Запуск при загрузке
+  window.onload = function() {
+    initQuiz();
+    displayLeaderboard();
+    
+    // Автоматически включаем музыку
+    const audio = document.getElementById("bg-music");
+    audio.volume = 0.3; // Устанавливаем комфортную громкость
+    
+    // Пытаемся запустить автоматически
+    const playPromise = audio.play();
+    
+    // Обрабатываем возможную ошибку автовоспроизведения
+    if (playPromise !== undefined) {
+      playPromise.catch(error => {
+        // Показываем кнопку для ручного включения
+        document.querySelector(".music-button").textContent = "🔇 Музыка";
+      });
+    }
+  };
   </script>
 </body>
 </html>

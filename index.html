@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Erkebulan Music Stream</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -14,11 +15,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: 100vh;
     }
 
     h1 {
       font-size: 3rem;
       margin-bottom: 40px;
+      text-align: center;
     }
 
     h1 span {
@@ -28,8 +31,7 @@
 
     .music-container {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
       width: 90%;
       max-width: 700px;
       background-color: #2a2a3b;
@@ -44,37 +46,59 @@
       transform: scale(1.02);
     }
 
+    .music-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
     .music-info {
       display: flex;
       align-items: center;
       gap: 20px;
+      flex-grow: 1;
     }
 
     .music-image {
-      width: 80px;
-      height: 80px;
+      width: 60px;
+      height: 60px;
       border-radius: 10px;
       object-fit: cover;
     }
 
     .music-details {
       text-align: left;
+      flex-grow: 1;
     }
 
     .music-title {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .music-artist {
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    .music-controls {
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
 
     .music-button {
       background: linear-gradient(135deg, #6e8efb, #a777e3);
       color: white;
-      padding: 10px 20px;
-      font-size: 1rem;
+      padding: 8px 15px;
+      font-size: 0.9rem;
       border: none;
       cursor: pointer;
       border-radius: 30px;
       transition: transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
     }
 
     .music-button:hover {
@@ -83,10 +107,10 @@
     }
 
     .heart {
-      font-size: 1.8em;
+      font-size: 1.5em;
       cursor: pointer;
       transition: color 0.3s, transform 0.3s;
-      margin-left: 10px;
+      color: #555;
     }
 
     .heart.liked {
@@ -94,10 +118,19 @@
       transform: scale(1.2);
     }
 
-    audio {
-      margin-top: 30px;
-      width: 80%;
-      max-width: 700px;
+    .song-player {
+      width: 100%;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .song-player.active {
+      display: block;
+    }
+
+    .song-player audio {
+      width: 100%;
+      height: 40px;
     }
 
     .random-button {
@@ -118,25 +151,28 @@
     }
 
     @media (max-width: 768px) {
-      .music-container {
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
+      body {
+        padding: 20px 10px;
       }
 
-      .music-info {
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+      }
+
+      .music-header {
         flex-direction: column;
-        text-align: center;
-        align-items: center;
+        align-items: flex-start;
+        gap: 15px;
+      }
+
+      .music-controls {
+        width: 100%;
+        justify-content: space-between;
       }
 
       .music-button {
         width: 100%;
-        padding: 15px;
-      }
-
-      audio {
-        width: 90%;
       }
     }
   </style>
@@ -149,191 +185,293 @@
   <button class="music-button">❓ Викторина: Достопримечательности</button>
 </a>
 
-<br> 
+<br>
 
-<div class="music-container">
-  <div class="music-info">
-    <img class="music-image" src="/images/someone.jpg" alt="Someone">
-    <div class="music-details">
-      <div class="music-title">Someone</div>
-      <button class="music-button" onclick="playSong('Vanotek feat. Denitia - Someone.wav')">▶ Play</button>
+<!-- Someone -->
+<div class="music-container" data-index="0">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/someone.jpg" alt="Someone">
+      <div class="music-details">
+        <div class="music-title">Someone</div>
+        <div class="music-artist">Vanotek feat. Denitia</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(0)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
     </div>
   </div>
-  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
 </div>
 
-<div class="music-container">
-  <div class="music-info">
-    <img class="music-image" src="/images/other-people.jpg" alt="Other People">
-    <div class="music-details">
-      <div class="music-title">Other People</div>
-      <button class="music-button" onclick="playSong('LP - Other People.wav')">▶ Play</button>
+<!-- Other People -->
+<div class="music-container" data-index="1">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/other-people.jpg" alt="Other People">
+      <div class="music-details">
+        <div class="music-title">Other People</div>
+        <div class="music-artist">LP</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(1)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
     </div>
   </div>
-  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
 </div>
 
-<div class="music-container">
-  <div class="music-info">
-    <img class="music-image" src="/images/beinen.jpg" alt="Beinen">
-    <div class="music-details">
-      <div class="music-title">Beinen</div>
-      <button class="music-button" onclick="playSong('madeniyett-beinen-bejne_(muzzona.kz).wav')">▶ Play</button>
+<!-- Beinen -->
+<div class="music-container" data-index="2">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/beinen.jpg" alt="Beinen">
+      <div class="music-details">
+        <div class="music-title">Beinen</div>
+        <div class="music-artist">Madeniyet</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(2)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
     </div>
   </div>
-  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
 </div>
 
-<div class="music-container">
-  <div class="music-info">
-    <img class="music-image" src="/images/jaryq.jpg" alt="Jaryq">
-    <div class="music-details">
-      <div class="music-title">Jaryq</div>
-      <button class="music-button" onclick="playSong('1645357455_koba-mans-jaryq_(uzxit.net).wav')">▶ Play</button>
+<!-- Jaryq -->
+<div class="music-container" data-index="3">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/jaryq.jpg" alt="Jaryq">
+      <div class="music-details">
+        <div class="music-title">Jaryq</div>
+        <div class="music-artist">Koba Mans</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(3)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
     </div>
   </div>
-  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
 </div>
 
-<div class="music-container">
-  <div class="music-info">
-    <img class="music-image" src="/images/thousand-years.jpg" alt="Thousand years">
-    <div class="music-details">
-      <div class="music-title">Thousand years</div>
-      <button class="music-button" onclick="playSong('Christina Perri - A Thousand Years.mp3')">▶ Play</button>
+<!-- Thousand years -->
+<div class="music-container" data-index="4">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/thousand-years.jpg" alt="Thousand years">
+      <div class="music-details">
+        <div class="music-title">Thousand years</div>
+        <div class="music-artist">Christina Perri</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(4)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
     </div>
   </div>
-  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
 </div>
 
-<div class="music-container">
-  <div class="music-info">
-    <img class="music-image" src="/images/sad.jpg" alt="SAD">
-    <div class="music-details">
-      <div class="music-title">SAD-XXXTentacion</div>
-      <button class="music-button" onclick="playSong('XXXTENTACION - SAD!_(play.muzfan.net).mp3')">▶ Play</button>
+<!-- SAD-XXXTentacion -->
+<div class="music-container" data-index="5">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/sad.jpg" alt="SAD">
+      <div class="music-details">
+        <div class="music-title">SAD-XXXTentacion</div>
+        <div class="music-artist">XXXTentacion</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(5)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
     </div>
   </div>
-  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
 </div>
 
-<div class="music-container">
-  <div class="music-info">
-    <img class="music-image" src="/images/hurts-so-good.jpg" alt="Hurts so good">
-    <div class="music-details">
-      <div class="music-title">Hurts so good</div>
-      <button class="music-button" onclick="playSong('Astrid S - Hurts So Good.mp3')">▶ Play</button>
+<!-- Hurts so good -->
+<div class="music-container" data-index="6">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/hurts-so-good.jpg" alt="Hurts so good">
+      <div class="music-details">
+        <div class="music-title">Hurts so good</div>
+        <div class="music-artist">Astrid S</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(6)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
     </div>
   </div>
-  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
 </div>
 
-<div class="music-container">
-  <div class="music-info">
-    <img class="music-image" src="/images/gata-only.jpg" alt="Gata only">
-    <div class="music-details">
-      <div class="music-title">Gata only</div>
-      <button class="music-button" onclick="playSong('FloyyMenor, Cris Mj - Gata Only.mp3')">▶ Play</button>
+<!-- Gata only -->
+<div class="music-container" data-index="7">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/gata-only.jpg" alt="Gata only">
+      <div class="music-details">
+        <div class="music-title">Gata only</div>
+        <div class="music-artist">FloyyMenor, Cris Mj</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(7)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
     </div>
   </div>
-  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
 </div>
 
-<div class="music-container">
-  <div class="music-info">
-    <img class="music-image" src="/images/ocean-drive.jpg" alt="ocean-drive">
-    <div class="music-details">
-      <div class="music-title">Ocean drive</div>
-      <button class="music-button" onclick="playSong('Duke Dumont - Ocean Drive.mp3')">▶ Play</button>
+<!-- Ocean drive -->
+<div class="music-container" data-index="8">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/ocean-drive.jpg" alt="Ocean drive">
+      <div class="music-details">
+        <div class="music-title">Ocean drive</div>
+        <div class="music-artist">Duke Dumont</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(8)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
     </div>
   </div>
-  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
 </div>
-
-<audio id="audio-player" controls></audio>
 
 <button class="random-button" id="random-button">Random</button>
 
 <script>
-  let currentSongIndex = 0;
+  let currentSongIndex = -1;
+  let audioPlayers = [];
 
   const songs = [
     {
       title: "Someone",
+      artist: "Vanotek feat. Denitia",
       image: "/images/someone.jpg",
       file: "Vanotek feat. Denitia - Someone.wav"
     },
     {
       title: "Other People",
+      artist: "LP",
       image: "/images/other-people.jpg",
       file: "LP - Other People.wav"
     },
     {
       title: "Beinen",
+      artist: "Madeniyet",
       image: "/images/beinen.jpg",
       file: "madeniyett-beinen-bejne_(muzzona.kz).wav"
     },
     {
       title: "Jaryq",
+      artist: "Koba Mans",
       image: "/images/jaryq.jpg",
       file: "1645357455_koba-mans-jaryq_(uzxit.net).wav"
     },
     {
       title: "Thousand years",
+      artist: "Christina Perri",
       image: "/images/thousand-years.jpg",
       file: "Christina Perri - A Thousand Years.mp3"
     },
     {
       title: "SAD-XXXTentacion",
+      artist: "XXXTentacion",
       image: "/images/sad.jpg",
       file: "XXXTENTACION - SAD!_(play.muzfan.net).mp3"
     },
     {
       title: "Hurts so good",
+      artist: "Astrid S",
       image: "/images/hurts-so-good.jpg",
       file: "Astrid S - Hurts So Good.mp3"
     },
     {
       title: "Gata only",
+      artist: "FloyyMenor, Cris Mj",
       image: "/images/gata-only.jpg",
       file: "FloyyMenor, Cris Mj - Gata Only.mp3"
     },
     {
       title: "Ocean drive",
+      artist: "Duke Dumont",
       image: "/images/ocean-drive.jpg",
-      file: "FloyyMenor, Cris Mj - Gata Only.mp3"
+      file: "Duke Dumont - Ocean Drive.mp3"
     }
   ];
 
-  function playSong(fileName) {
-    const audioPlayer = document.getElementById('audio-player');
-    audioPlayer.src = '/audio/' + fileName;
+  function playSong(index) {
+    // Stop currently playing song if any
+    if (currentSongIndex !== -1) {
+      audioPlayers[currentSongIndex].pause();
+      document.querySelectorAll('.song-player')[currentSongIndex].classList.remove('active');
+    }
+    
+    // Play new song
+    currentSongIndex = index;
+    const audioPlayer = document.querySelectorAll('.song-player audio')[index];
+    audioPlayer.src = '/audio/' + songs[index].file;
     audioPlayer.play();
-  }
-
-  function nextSong() {
-    currentSongIndex = (currentSongIndex + 1) % songs.length;
-    playSong(songs[currentSongIndex].file);
-  }
-
-  function setupAudioPlayer() {
-    const audioPlayer = document.getElementById('audio-player');
-    audioPlayer.addEventListener('ended', nextSong);
-  }
-
-  function playRandomSong() {
-    const randomIndex = Math.floor(Math.random() * songs.length);
-    currentSongIndex = randomIndex;
-    playSong(songs[randomIndex].file);
+    document.querySelectorAll('.song-player')[index].classList.add('active');
+    
+    // Store reference to audio player
+    audioPlayers[index] = audioPlayer;
+    
+    // Set up event listener for when song ends
+    audioPlayer.onended = function() {
+      document.querySelectorAll('.song-player')[index].classList.remove('active');
+      currentSongIndex = -1;
+    };
   }
 
   function toggleHeart(element) {
     element.classList.toggle("liked");
   }
 
+  function playRandomSong() {
+    let randomIndex;
+    do {
+      randomIndex = Math.floor(Math.random() * songs.length);
+    } while (randomIndex === currentSongIndex && songs.length > 1);
+    
+    playSong(randomIndex);
+  }
+
   window.onload = function() {
-    setupAudioPlayer();
-    playSong(songs[currentSongIndex].file);
+    // Initialize all audio players
+    document.querySelectorAll('.song-player audio').forEach(audio => {
+      audioPlayers.push(audio);
+    });
   };
 
   document.getElementById('random-button').addEventListener('click', playRandomSong);
