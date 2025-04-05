@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Викторина по странам</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(to right, #1e1e2f, #3c3c5c);
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #ff4b5c;
+      margin-bottom: 30px;
+    }
+
+    .quiz-image {
+      width: 300px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      margin-bottom: 20px;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      max-width: 500px;
+      margin: 0 auto 30px;
+    }
+
+    .option-btn {
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      border: none;
+      border-radius: 30px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .option-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(166, 119, 227, 0.5);
+    }
+
+    .score {
+      font-size: 1.5rem;
+      margin-top: 30px;
+    }
+
+    .music-button {
+      margin-top: 20px;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      color: white;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      border-radius: 30px;
+    }
+
+    a {
+      color: #ccc;
+      display: block;
+      margin-top: 40px;
+    }
+
+    #result {
+      font-size: 1.5rem;
+      margin-top: 40px;
+  </style>
+</head>
+<body>
+
+  <button class="music-button" onclick="toggleMusic()">🔊 Музыка</button>
+
+  <h1>🌍 Сурет бойынша елді табыңыз!!!</h1>
+  <img class="quiz-image" id="quiz-image" src="" alt="Картинка вопроса" />
+  <div class="options" id="options"></div>
+  <div class="score" id="score"></div>
+  <a href="index.html">← Артқа плеерге</a>
+
+  <audio id="bg-music" src="/quiz_audio/0226-muz-vremja-poshlo-1105473466_-mz30858zv86866.mp3" autoplay loop></audio>
+
+  <script>
+    const easyQuestions = [
+      { image: "/quiz_images/france.jpg", correct: "Франция", options: ["Франция", "Испания", "Италия", "Германия"] },
+      { image: "/quiz_images/japan.jpg", correct: "Япония", options: ["Китай", "Япония", "Корея", "Тайвань"] },
+      { image: "/quiz_images/brazil.jpg", correct: "Бразилия", options: ["Аргентина", "Колумбия", "Бразилия", "Мексика"] },
+      { image: "/quiz_images/egypt.webp", correct: "Египет", options: ["Марокко", "Египет", "Тунис", "Турция"] },
+      { image: "/quiz_images/russia.avif", correct: "Россия", options: ["Украина", "Казахстан", "Россия", "Польша"] },
+    ];
+
+    const mediumQuestions = [
+      { image: "/quiz_images/canada.jpg", correct: "Канада", options: ["США", "Канада", "Австралия", "Норвегия"] },
+      { image: "/quiz_images/turkey.webp", correct: "Турция", options: ["Турция", "Греция", "Кипр", "Италия"] },
+      { image: "/quiz_images/india.jpg", correct: "Индия", options: ["Пакистан", "Индия", "Бангладеш", "Шри-Ланка"] },
+    ];
+
+    const hardQuestions = [
+      { image: "/quiz_images/nepal.webp", correct: "Непал", options: ["Бутан", "Непал", "Тибет", "Лаос"] },
+      { image: "/quiz_images/iceland.webp", correct: "Исландия", options: ["Исландия", "Норвегия", "Гренландия", "Швеция"] },
+    ];
+
+    // Получаем 5 случайных из easy, 3 из medium и 2 из hard
+    function getRandomQuestions(source, count) {
+      return source.sort(() => 0.5 - Math.random()).slice(0, count);
+    }
+
+    const questions = [
+      ...getRandomQuestions(easyQuestions, 5),
+      ...getRandomQuestions(mediumQuestions, 3),
+      ...getRandomQuestions(hardQuestions, 2)
+    ].sort(() => 0.5 - Math.random()); 
+
+    let currentIndex = 0;
+    let score = 0;
+
+    function showQuestion() {
+      if (currentIndex >= questions.length) {
+        document.getElementById("quiz-image").style.display = "none";
+        document.getElementById("options").innerHTML = "";
+        document.getElementById("score").innerHTML = `🏁 Викторина аяқталды!<br>Сіздің нәтижеңіз: <strong>${score} - ${questions.length}</strong>`;
+        return;
+      }
+
+      const q = questions[currentIndex];
+      document.getElementById("quiz-image").src = q.image;
+
+      const optionsContainer = document.getElementById("options");
+      optionsContainer.innerHTML = "";
+
+      q.options.sort(() => 0.5 - Math.random()).forEach(option => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerText = option;
+        btn.onclick = () => {
+          if (option === q.correct) {
+            score++;
+          }
+          currentIndex++;
+          showQuestion();
+        };
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    showQuestion();
+
+    function toggleMusic() {
+      const audio = document.getElementById("bg-music");
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    }
+  </script>
+</body>
+</html>

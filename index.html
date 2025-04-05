@@ -100,6 +100,23 @@
       max-width: 700px;
     }
 
+    .random-button {
+      margin-top: 30px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #ff6f91, #ff4b5c);
+      color: white;
+      font-size: 1.1rem;
+      border: none;
+      cursor: pointer;
+      border-radius: 30px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .random-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(255, 79, 92, 0.5);
+    }
+
     @media (max-width: 768px) {
       .music-container {
         flex-direction: column;
@@ -127,6 +144,12 @@
 <body>
 
 <h1><span>Erkebulan</span> Local Music Stream</h1>
+
+<a href="quiz.html">
+  <button class="music-button">❓ Викторина: Достопримечательности</button>
+</a>
+
+<br> 
 
 <div class="music-container">
   <div class="music-info">
@@ -172,18 +195,148 @@
   <div class="heart" onclick="toggleHeart(this)">❤️</div>
 </div>
 
+<div class="music-container">
+  <div class="music-info">
+    <img class="music-image" src="/images/thousand-years.jpg" alt="Thousand years">
+    <div class="music-details">
+      <div class="music-title">Thousand years</div>
+      <button class="music-button" onclick="playSong('Christina Perri - A Thousand Years.mp3')">▶ Play</button>
+    </div>
+  </div>
+  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+</div>
+
+<div class="music-container">
+  <div class="music-info">
+    <img class="music-image" src="/images/sad.jpg" alt="SAD">
+    <div class="music-details">
+      <div class="music-title">SAD-XXXTentacion</div>
+      <button class="music-button" onclick="playSong('XXXTENTACION - SAD!_(play.muzfan.net).mp3')">▶ Play</button>
+    </div>
+  </div>
+  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+</div>
+
+<div class="music-container">
+  <div class="music-info">
+    <img class="music-image" src="/images/hurts-so-good.jpg" alt="Hurts so good">
+    <div class="music-details">
+      <div class="music-title">Hurts so good</div>
+      <button class="music-button" onclick="playSong('Astrid S - Hurts So Good.mp3')">▶ Play</button>
+    </div>
+  </div>
+  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+</div>
+
+<div class="music-container">
+  <div class="music-info">
+    <img class="music-image" src="/images/gata-only.jpg" alt="Gata only">
+    <div class="music-details">
+      <div class="music-title">Gata only</div>
+      <button class="music-button" onclick="playSong('FloyyMenor, Cris Mj - Gata Only.mp3')">▶ Play</button>
+    </div>
+  </div>
+  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+</div>
+
+<div class="music-container">
+  <div class="music-info">
+    <img class="music-image" src="/images/ocean-drive.jpg" alt="ocean-drive">
+    <div class="music-details">
+      <div class="music-title">Ocean drive</div>
+      <button class="music-button" onclick="playSong('Duke Dumont - Ocean Drive.mp3')">▶ Play</button>
+    </div>
+  </div>
+  <div class="heart" onclick="toggleHeart(this)">❤️</div>
+</div>
+
 <audio id="audio-player" controls></audio>
 
+<button class="random-button" id="random-button">Random</button>
+
 <script>
+  let currentSongIndex = 0;
+
+  const songs = [
+    {
+      title: "Someone",
+      image: "/images/someone.jpg",
+      file: "Vanotek feat. Denitia - Someone.wav"
+    },
+    {
+      title: "Other People",
+      image: "/images/other-people.jpg",
+      file: "LP - Other People.wav"
+    },
+    {
+      title: "Beinen",
+      image: "/images/beinen.jpg",
+      file: "madeniyett-beinen-bejne_(muzzona.kz).wav"
+    },
+    {
+      title: "Jaryq",
+      image: "/images/jaryq.jpg",
+      file: "1645357455_koba-mans-jaryq_(uzxit.net).wav"
+    },
+    {
+      title: "Thousand years",
+      image: "/images/thousand-years.jpg",
+      file: "Christina Perri - A Thousand Years.mp3"
+    },
+    {
+      title: "SAD-XXXTentacion",
+      image: "/images/sad.jpg",
+      file: "XXXTENTACION - SAD!_(play.muzfan.net).mp3"
+    },
+    {
+      title: "Hurts so good",
+      image: "/images/hurts-so-good.jpg",
+      file: "Astrid S - Hurts So Good.mp3"
+    },
+    {
+      title: "Gata only",
+      image: "/images/gata-only.jpg",
+      file: "FloyyMenor, Cris Mj - Gata Only.mp3"
+    },
+    {
+      title: "Ocean drive",
+      image: "/images/ocean-drive.jpg",
+      file: "FloyyMenor, Cris Mj - Gata Only.mp3"
+    }
+  ];
+
   function playSong(fileName) {
     const audioPlayer = document.getElementById('audio-player');
     audioPlayer.src = '/audio/' + fileName;
     audioPlayer.play();
   }
 
+  function nextSong() {
+    currentSongIndex = (currentSongIndex + 1) % songs.length;
+    playSong(songs[currentSongIndex].file);
+  }
+
+  function setupAudioPlayer() {
+    const audioPlayer = document.getElementById('audio-player');
+    audioPlayer.addEventListener('ended', nextSong);
+  }
+
+  function playRandomSong() {
+    const randomIndex = Math.floor(Math.random() * songs.length);
+    currentSongIndex = randomIndex;
+    playSong(songs[randomIndex].file);
+  }
+
   function toggleHeart(element) {
     element.classList.toggle("liked");
   }
+
+  window.onload = function() {
+    setupAudioPlayer();
+    playSong(songs[currentSongIndex].file);
+  };
+
+  document.getElementById('random-button').addEventListener('click', playRandomSong);
 </script>
 
 </body>
