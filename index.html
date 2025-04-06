@@ -466,6 +466,46 @@
   </div>
 </div>
 
+<!-- Eski suret -->
+<div class="music-container" data-index="12" data-language="kz">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/eski-suret.jpg" alt="Eski suret">
+      <div class="music-details">
+        <div class="music-title">Eski suret</div>
+        <div class="music-artist">IL'HAN</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(12)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
+    </div>
+  </div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
+</div>
+
+<!-- Zhanbyr -->
+<div class="music-container" data-index="13" data-language="kz">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/zhanbyr.png" alt="Zhanbyr">
+      <div class="music-details">
+        <div class="music-title">Zhańbyr</div>
+        <div class="music-artist">Dosekesh</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(13)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
+    </div>
+  </div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
+</div>
+
 <button class="random-button" id="random-button">Random</button>
 
 <script>
@@ -556,6 +596,20 @@
       artist: "Қанат Ерлан",
       image: "/images/bir-gajap.jpg",
       file: "Қанат Ерлан - Bir gajap.mp3",
+      language: "kz"
+    },
+    {
+      title: "Eski suret",
+      artist: "IL'HAN",
+      image: "/images/eski-suret.jpg",
+      file: "ilhan-eski-suret_(muzzonas.ru).mp3",
+      language: "kz"
+    },
+    {
+      title: "Zhańbyr",
+      artist: "Dosekesh",
+      image: "/images/zhanbyr.png",
+      file: "dosekesh-zhabyr_(muzzonas.ru).mp3",
       language: "kz"
     }
   ];
