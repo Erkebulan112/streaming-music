@@ -150,6 +150,31 @@
       box-shadow: 0 4px 15px rgba(255, 79, 92, 0.5);
     }
 
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .filter-button {
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .filter-button.active {
+      background: linear-gradient(135deg, #ff6f91, #ff4b5c);
+      box-shadow: 0 4px 15px rgba(255, 79, 92, 0.5);
+    }
+
+    .filter-button:hover {
+      transform: scale(1.05);
+    }
+
     @media (max-width: 768px) {
       body {
         padding: 20px 10px;
@@ -174,6 +199,15 @@
       .music-button {
         width: 100%;
       }
+
+      .filter-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .filter-button {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -187,8 +221,13 @@
 
 <br>
 
+<div class="filter-buttons">
+  <button class="filter-button active" onclick="filterSongs('all')">Все песни</button>
+  <button class="filter-button" onclick="filterSongs('kz')">Қазақша</button>
+</div>
+
 <!-- Someone -->
-<div class="music-container" data-index="0">
+<div class="music-container" data-index="0" data-language="en">
   <div class="music-header">
     <div class="music-info">
       <img class="music-image" src="/images/someone.jpg" alt="Someone">
@@ -208,7 +247,7 @@
 </div>
 
 <!-- Other People -->
-<div class="music-container" data-index="1">
+<div class="music-container" data-index="1" data-language="en">
   <div class="music-header">
     <div class="music-info">
       <img class="music-image" src="/images/other-people.jpg" alt="Other People">
@@ -228,7 +267,7 @@
 </div>
 
 <!-- Beinen -->
-<div class="music-container" data-index="2">
+<div class="music-container" data-index="2" data-language="kz">
   <div class="music-header">
     <div class="music-info">
       <img class="music-image" src="/images/beinen.jpg" alt="Beinen">
@@ -248,7 +287,7 @@
 </div>
 
 <!-- Jaryq -->
-<div class="music-container" data-index="3">
+<div class="music-container" data-index="3" data-language="kz">
   <div class="music-header">
     <div class="music-info">
       <img class="music-image" src="/images/jaryq.jpg" alt="Jaryq">
@@ -268,7 +307,7 @@
 </div>
 
 <!-- Thousand years -->
-<div class="music-container" data-index="4">
+<div class="music-container" data-index="4" data-language="en">
   <div class="music-header">
     <div class="music-info">
       <img class="music-image" src="/images/thousand-years.jpg" alt="Thousand years">
@@ -288,7 +327,7 @@
 </div>
 
 <!-- SAD-XXXTentacion -->
-<div class="music-container" data-index="5">
+<div class="music-container" data-index="5" data-language="en">
   <div class="music-header">
     <div class="music-info">
       <img class="music-image" src="/images/sad.jpg" alt="SAD">
@@ -308,7 +347,7 @@
 </div>
 
 <!-- Hurts so good -->
-<div class="music-container" data-index="6">
+<div class="music-container" data-index="6" data-language="en">
   <div class="music-header">
     <div class="music-info">
       <img class="music-image" src="/images/hurts-so-good.jpg" alt="Hurts so good">
@@ -328,7 +367,7 @@
 </div>
 
 <!-- Gata only -->
-<div class="music-container" data-index="7">
+<div class="music-container" data-index="7" data-language="en">
   <div class="music-header">
     <div class="music-info">
       <img class="music-image" src="/images/gata-only.jpg" alt="Gata only">
@@ -348,7 +387,7 @@
 </div>
 
 <!-- Ocean drive -->
-<div class="music-container" data-index="8">
+<div class="music-container" data-index="8" data-language="en">
   <div class="music-header">
     <div class="music-info">
       <img class="music-image" src="/images/ocean-drive.jpg" alt="Ocean drive">
@@ -367,108 +406,237 @@
   </div>
 </div>
 
+<!-- Back to me -->
+<div class="music-container" data-index="9" data-language="en">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/back-to-me.jpg" alt="Back to me">
+      <div class="music-details">
+        <div class="music-title">Back to me</div>
+        <div class="music-artist">Vanotek feat. Denitia</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(9)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
+    </div>
+  </div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
+</div>
+
+<!-- Tattoo -->
+<div class="music-container" data-index="10" data-language="en">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/tattoo.jpg" alt="Tattoo">
+      <div class="music-details">
+        <div class="music-title">Tattoo</div>
+        <div class="music-artist">Loreen</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(10)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
+    </div>
+  </div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
+</div>
+
+<!-- Bir gajap -->
+<div class="music-container" data-index="11" data-language="kz">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/bir-gajap.jpg" alt="Tattoo">
+      <div class="music-details">
+        <div class="music-title">Bir gajap</div>
+        <div class="music-artist">Қанат Ерлан</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(11)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
+    </div>
+  </div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
+</div>
+
 <button class="random-button" id="random-button">Random</button>
 
 <script>
   let currentSongIndex = -1;
   let audioPlayers = [];
+  let currentFilter = 'all';
 
   const songs = [
     {
       title: "Someone",
       artist: "Vanotek feat. Denitia",
       image: "/images/someone.jpg",
-      file: "Vanotek feat. Denitia - Someone.wav"
+      file: "Vanotek feat. Denitia - Someone.wav",
+      language: "en"
     },
     {
       title: "Other People",
       artist: "LP",
       image: "/images/other-people.jpg",
-      file: "LP - Other People.wav"
+      file: "LP - Other People.wav",
+      language: "en"
     },
     {
       title: "Beinen",
       artist: "Madeniyet",
       image: "/images/beinen.jpg",
-      file: "madeniyett-beinen-bejne_(muzzona.kz).wav"
+      file: "madeniyett-beinen-bejne_(muzzona.kz).wav",
+      language: "kz"
     },
     {
       title: "Jaryq",
       artist: "Koba Mans",
       image: "/images/jaryq.jpg",
-      file: "1645357455_koba-mans-jaryq_(uzxit.net).wav"
+      file: "1645357455_koba-mans-jaryq_(uzxit.net).wav",
+      language: "kz"
     },
     {
       title: "Thousand years",
       artist: "Christina Perri",
       image: "/images/thousand-years.jpg",
-      file: "Christina Perri - A Thousand Years.mp3"
+      file: "Christina Perri - A Thousand Years.mp3",
+      language: "en"
     },
     {
       title: "SAD-XXXTentacion",
       artist: "XXXTentacion",
       image: "/images/sad.jpg",
-      file: "XXXTENTACION - SAD!_(play.muzfan.net).mp3"
+      file: "XXXTENTACION - SAD!_(play.muzfan.net).mp3",
+      language: "en"
     },
     {
       title: "Hurts so good",
       artist: "Astrid S",
       image: "/images/hurts-so-good.jpg",
-      file: "Astrid S - Hurts So Good.mp3"
+      file: "Astrid S - Hurts So Good.mp3",
+      language: "en"
     },
     {
       title: "Gata only",
       artist: "FloyyMenor, Cris Mj",
       image: "/images/gata-only.jpg",
-      file: "FloyyMenor, Cris Mj - Gata Only.mp3"
+      file: "FloyyMenor, Cris Mj - Gata Only.mp3",
+      language: "en"
     },
     {
       title: "Ocean drive",
       artist: "Duke Dumont",
       image: "/images/ocean-drive.jpg",
-      file: "Duke Dumont - Ocean Drive.mp3"
+      file: "Duke Dumont - Ocean Drive.mp3",
+      language: "en"
+    },
+    {
+      title: "Back to me",
+      artist: "Vanotek feat. Eneli",
+      image: "/images/ocean-drive.jpg",
+      file: "Vanotek feat. Eneli - Back To Me.mp3",
+      language: "en"
+    },
+    {
+      title: "Tattoo",
+      artist: "Loreen",
+      image: "/images/tatoo.jpg",
+      file: "Loreen-Tattoo.mp3",
+      language: "en"
+    },
+    {
+      title: "Bir gajap",
+      artist: "Қанат Ерлан",
+      image: "/images/bir-gajap.jpg",
+      file: "Қанат Ерлан - Bir gajap.mp3",
+      language: "kz"
     }
   ];
 
   function playSong(index) {
-    // Stop currently playing song if any
+    // Остановить текущую песню, если есть
     if (currentSongIndex !== -1) {
-      audioPlayers[currentSongIndex].pause();
-      document.querySelectorAll('.song-player')[currentSongIndex].classList.remove('active');
+      stopCurrentSong();
     }
     
-    // Play new song
+    // Воспроизвести новую песню
     currentSongIndex = index;
     const audioPlayer = document.querySelectorAll('.song-player audio')[index];
     audioPlayer.src = '/audio/' + songs[index].file;
     audioPlayer.play();
     document.querySelectorAll('.song-player')[index].classList.add('active');
     
-    // Store reference to audio player
+    // Сохранить ссылку на аудиоплеер
     audioPlayers[index] = audioPlayer;
     
-    // Set up event listener for when song ends
+    // Настроить обработчик окончания песни
     audioPlayer.onended = function() {
       document.querySelectorAll('.song-player')[index].classList.remove('active');
       currentSongIndex = -1;
     };
   }
 
+  function stopCurrentSong() {
+    if (currentSongIndex !== -1) {
+      audioPlayers[currentSongIndex].pause();
+      document.querySelectorAll('.song-player')[currentSongIndex].classList.remove('active');
+      currentSongIndex = -1;
+    }
+  }
+
   function toggleHeart(element) {
     element.classList.toggle("liked");
   }
 
+  function filterSongs(language) {
+    // Остановить текущую песню при переключении фильтра
+    stopCurrentSong();
+    
+    currentFilter = language;
+    
+    // Обновить активную кнопку
+    document.querySelectorAll('.filter-button').forEach(button => {
+      button.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Показать/скрыть песни в соответствии с фильтром
+    document.querySelectorAll('.music-container').forEach(container => {
+      if (language === 'all' || container.getAttribute('data-language') === language) {
+        container.style.display = 'flex';
+      } else {
+        container.style.display = 'none';
+      }
+    });
+  }
+
   function playRandomSong() {
+    let availableSongs = [];
+    document.querySelectorAll('.music-container').forEach(container => {
+      if (container.style.display !== 'none') {
+        availableSongs.push(parseInt(container.getAttribute('data-index')));
+      }
+    });
+    
+    if (availableSongs.length === 0) return;
+    
     let randomIndex;
     do {
-      randomIndex = Math.floor(Math.random() * songs.length);
-    } while (randomIndex === currentSongIndex && songs.length > 1);
+      randomIndex = availableSongs[Math.floor(Math.random() * availableSongs.length)];
+    } while (randomIndex === currentSongIndex && availableSongs.length > 1);
     
     playSong(randomIndex);
   }
 
   window.onload = function() {
-    // Initialize all audio players
+    // Инициализировать все аудиоплееры
     document.querySelectorAll('.song-player audio').forEach(audio => {
       audioPlayers.push(audio);
     });
