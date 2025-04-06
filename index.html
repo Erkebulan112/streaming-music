@@ -506,6 +506,26 @@
   </div>
 </div>
 
+<!-- Mars -->
+<div class="music-container" data-index="14" data-language="kz">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/mars.jpg" alt="Mars">
+      <div class="music-details">
+        <div class="music-title">Mars</div>
+        <div class="music-artist">IL'HAN</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(14)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
+    </div>
+  </div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
+</div>
+
 <button class="random-button" id="random-button">Random</button>
 
 <script>
@@ -602,22 +622,64 @@
       title: "Eski suret",
       artist: "IL'HAN",
       image: "/images/eski-suret.jpg",
-      file: "ilhan-eski-suret_(muzzonas.ru).mp3",
+      file: "IL'HAN - Eski suret.mp3",
       language: "kz"
     },
     {
       title: "Zhańbyr",
       artist: "Dosekesh",
       image: "/images/zhanbyr.png",
-      file: "dosekesh-zhabyr_(muzzonas.ru).mp3",
+      file: "Dosekesh - Zhańbyr.mp3",
+      language: "kz"
+    },
+    {
+      title: "Mars",
+      artist: "IL'HAN",
+      image: "/images/mars.jpg",
+      file: "IL'HAN - Mars.mp3",
       language: "kz"
     }
   ];
+
+  function getNextSongIndex(currentIndex) {
+    const containers = document.querySelectorAll('.music-container');
+    let nextIndex = currentIndex + 1;
+    
+    // Ищем следующую видимую песню
+    while (nextIndex < containers.length) {
+      const container = containers[nextIndex];
+      if (currentFilter === 'all' || container.getAttribute('data-language') === currentFilter) {
+        if (container.style.display !== 'none') {
+          return nextIndex;
+        }
+      }
+      nextIndex++;
+    }
+    
+    // Если дошли до конца, начинаем сначала (возвращаем первую видимую песню)
+    for (let i = 0; i < currentIndex; i++) {
+      const container = containers[i];
+      if (currentFilter === 'all' || container.getAttribute('data-language') === currentFilter) {
+        if (container.style.display !== 'none') {
+          return i;
+        }
+      }
+    }
+    
+    // Если не найдено подходящих песен
+    return -1;
+  }
 
   function playSong(index) {
     // Остановить текущую песню, если есть
     if (currentSongIndex !== -1) {
       stopCurrentSong();
+    }
+    
+    // Проверить, что индекс в допустимых пределах
+    if (index < 0 || index >= songs.length) {
+      currentSongIndex = -1;
+      return;
     }
     
     // Воспроизвести новую песню
@@ -633,13 +695,23 @@
     // Настроить обработчик окончания песни
     audioPlayer.onended = function() {
       document.querySelectorAll('.song-player')[index].classList.remove('active');
-      currentSongIndex = -1;
+      
+      // Получаем индекс следующей песни
+      const nextIndex = getNextSongIndex(index);
+      
+      // Если есть следующая песня - воспроизводим её
+      if (nextIndex >= 0 && nextIndex < songs.length) {
+        playSong(nextIndex);
+      } else {
+        currentSongIndex = -1;
+      }
     };
   }
 
   function stopCurrentSong() {
-    if (currentSongIndex !== -1) {
+    if (currentSongIndex !== -1 && audioPlayers[currentSongIndex]) {
       audioPlayers[currentSongIndex].pause();
+      audioPlayers[currentSongIndex].currentTime = 0;
       document.querySelectorAll('.song-player')[currentSongIndex].classList.remove('active');
       currentSongIndex = -1;
     }
