@@ -18,6 +18,11 @@
       min-height: 100vh;
     }
 
+    .button-container {
+      display: flex;
+      gap: 20px; /* Расстояние между кнопками */
+    }
+
     h1 {
       font-size: 3rem;
       margin-bottom: 40px;
@@ -218,6 +223,18 @@
 <a href="quiz.html">
   <button class="music-button">❓ Викторина: Достопримечательности</button>
 </a>
+
+<br>
+
+<div class="button-container">
+  <a href="tic-tac-toe.html">
+    <button class="music-button">🎮 Tic Tac Toe</button>
+  </a>
+
+  <a href="snake.html">
+    <button class="music-button">🐍 Snake</button>
+  </a>
+</div>  
 
 <br>
 
@@ -526,6 +543,46 @@
   </div>
 </div>
 
+<!-- Seni suyem -->
+<div class="music-container" data-index="15" data-language="kz">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/zaman.jpg" alt="Seni suyem">
+      <div class="music-details">
+        <div class="music-title">Seni suyem</div>
+        <div class="music-artist">Zaman</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(15)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
+    </div>
+  </div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
+</div>
+
+<!-- Vidrado -->
+<div class="music-container" data-index="16" data-language="en">
+  <div class="music-header">
+    <div class="music-info">
+      <img class="music-image" src="/images/vidrado.jpg" alt="Vidrado">
+      <div class="music-details">
+        <div class="music-title">Vidrado Em Você</div>
+        <div class="music-artist">DJ Guuga, MC Livinho</div>
+      </div>
+    </div>
+    <div class="music-controls">
+      <button class="music-button" onclick="playSong(16)">▶ Play</button>
+      <div class="heart" onclick="toggleHeart(this)">❤️</div>
+    </div>
+  </div>
+  <div class="song-player">
+    <audio controls></audio>
+  </div>
+</div>
+
 <button class="random-button" id="random-button">Random</button>
 
 <script>
@@ -637,6 +694,20 @@
       artist: "IL'HAN",
       image: "/images/mars.jpg",
       file: "IL'HAN - Mars.mp3",
+      language: "kz"
+    },
+    {
+      title: "Seni suyem",
+      artist: "Zaman",
+      image: "/images/zaman.jpg",
+      file: "Seni suyem.mp3",
+      language: "kz"
+    },
+    {
+      title: "Vidrado Em Você",
+      artist: "DJ Guuga, MC Livinho",
+      image: "/images/vidrado.jpg",
+      file: "DJ Guuga, MC Livinho - Vidrado Em Você.mp3",
       language: "kz"
     }
   ];
